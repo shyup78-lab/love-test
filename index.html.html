@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>연애 예능 캐릭터 테스트 🍭</title>
+<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Jua&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  :root {
+    --bg-1: #fff5f7;
+    --bg-2: #ffeef3;
+    --paper: #ffffff;
+    --ink: #4a3838;
+    --pink: #ff8fa3;
+    --pink-deep: #e85d7a;
+    --peach: #ffd4b8;
+    --yellow: #ffe9a8;
+    --mint: #b8e6d1;
+    --sky: #c4dffd;
+    --lavender: #dcc8f5;
+    --coral: #ffb5a7;
+  }
+  
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 100%);
+    color: var(--ink);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+  
+  /* 배경 떠다니는 도형들 */
+  .bg-decoration {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  
+  .bg-shape {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.4;
+    animation: float 20s infinite ease-in-out;
+  }
+  
+  .bg-shape:nth-child(1) { width: 120px; height: 120px; background: var(--peach); top: 10%; left: -40px; animation-delay: 0s; }
+  .bg-shape:nth-child(2) { width: 80px; height: 80px; background: var(--mint); top: 30%; right: -20px; animation-delay: 5s; }
+  .bg-shape:nth-child(3) { width: 100px; height: 100px; background: var(--sky); top: 60%; left: -30px; animation-delay: 10s; }
+  .bg-shape:nth-child(4) { width: 60px; height: 60px; background: var(--lavender); top: 80%; right: 10%; animation-delay: 15s; }
+  .bg-shape:nth-child(5) { width: 90px; height: 90px; background: var(--yellow); top: 45%; right: -30px; animation-delay: 7s; }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0) translateX(0); }
+    33% { transform: translateY(-30px) translateX(20px); }
+    66% { transform: translateY(20px) translateX(-15px); }
+  }
+  
+  .container {
+    max-width: 580px;
+    margin: 0 auto;
+    padding: 30px 20px;
+    position: relative;
+    z-index: 2;
+  }
+  
+  /* ================== 방문자 카운터 (상단) ================== */
+  .visitor-bar {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .visitor-chip {
+    background: var(--paper);
+    border-radius: 50px;
+    padding: 8px 16px;
+    font-size: 12px;
+    color: var(--ink);
+    box-shadow: 0 2px 8px rgba(255, 143, 163, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+  }
+  
+  .visitor-chip .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--pink-deep);
+    animation: pulse 2s infinite;
+  }
+  
+  .visitor-chip.total .dot {
+    background: var(--mint);
+    animation: none;
+  }
+  
+  .visitor-chip strong {
+    color: var(--pink-deep);
+    font-weight: 700;
+  }
+  
+  .visitor-chip.total strong {
+    color: #4a9b7a;
+  }
+  
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.2); }
+  }
+  
+  /* ================== 인트로 화면 ================== */
+  .intro {
+    text-align: center;
+    padding: 20px 0;
+  }
+  
+  .intro-emoji {
+    font-size: 56px;
+    margin-bottom: 10px;
+    display: inline-block;
+    animation: wiggle 3s infinite ease-in-out;
+  }
+  
+  @keyframes wiggle {
+    0%, 100% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
+  }
+  
+  .intro h1 {
+    font-family: 'Jua', sans-serif;
+    font-size: 42px;
+    line-height: 1.2;
+    margin-bottom: 6px;
+    color: var(--ink);
+    letter-spacing: -1px;
+  }
+  
+  .intro h1 .heart {
+    color: var(--pink-deep);
+    display: inline-block;
+    animation: heartbeat 1.5s infinite;
+  }
+  
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    25%, 75% { transform: scale(1.15); }
+  }
+  
+  .intro .subtitle {
+    font-family: 'Gaegu', cursive;
+    font-size: 20px;
+    color: var(--pink-deep);
+    margin-bottom: 30px;
+    font-weight: 700;
+  }
+  
+  .description-card {
+    background: var(--paper);
+    border-radius: 24px;
+    padding: 28px 24px;
+    text-align: left;
+    margin: 20px 0;
+    box-shadow: 0 8px 24px rgba(255, 143, 163, 0.15);
+    position: relative;
+    border: 3px solid var(--peach);
+  }
+  
+  .description-card::before {
+    content: '💌';
+    position: absolute;
+    top: -20px;
+    left: 24px;
+    background: var(--paper);
+    padding: 4px 10px;
+    font-size: 24px;
+    border-radius: 50px;
+    border: 3px solid var(--peach);
+  }
+  
+  .description-card p {
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: 12px;
+    color: var(--ink);
+  }
+  
+  .description-card p:last-child { margin-bottom: 0; }
+  
+  .description-card strong {
+    background: var(--yellow);
+    padding: 1px 6px;
+    border-radius: 6px;
+    font-weight: 700;
+  }
+  
+  .start-btn {
+    background: linear-gradient(135deg, var(--pink) 0%, var(--pink-deep) 100%);
+    color: white;
+    border: none;
+    padding: 18px 48px;
+    font-family: 'Jua', sans-serif;
+    font-size: 22px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    box-shadow: 0 8px 20px rgba(232, 93, 122, 0.3);
+    transition: all 0.2s;
+    margin-top: 16px;
+    border-radius: 50px;
+    position: relative;
+  }
+  
+  .start-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(232, 93, 122, 0.4);
+  }
+  
+  .start-btn:active {
+    transform: translateY(-1px);
+  }
+  
+  .type-preview {
+    margin-top: 32px;
+    padding: 18px;
+    background: var(--paper);
+    border-radius: 20px;
+    border: 2px dashed var(--pink);
+  }
+  
+  .type-preview .label {
+    font-family: 'Gaegu', cursive;
+    font-size: 16px;
+    color: var(--pink-deep);
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  
+  .type-names {
+    font-size: 13px;
+    color: #777;
+    line-height: 1.9;
+  }
+  
+  /* ================== 테스트 화면 ================== */
+  .test-screen {
+    display: none;
+    padding: 20px 0;
+  }
+  
+  .progress-bar {
+    background: var(--paper);
+    border-radius: 50px;
+    height: 18px;
+    position: relative;
+    margin-bottom: 6px;
+    overflow: hidden;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+  }
+  
+  .progress-fill {
+    background: linear-gradient(90deg, var(--pink) 0%, var(--pink-deep) 100%);
+    height: 100%;
+    width: 0%;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 50px;
+    position: relative;
+  }
+  
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, 
+      rgba(255,255,255,0.4) 0%, 
+      rgba(255,255,255,0) 50%, 
+      rgba(255,255,255,0.3) 100%
+    );
+  }
+  
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 28px;
+    padding: 0 4px;
+  }
+  
+  .progress-info .q-num {
+    font-family: 'Jua', sans-serif;
+    font-size: 15px;
+    color: var(--pink-deep);
+  }
+  
+  .progress-info .label-side {
+    font-family: 'Gaegu', cursive;
+    font-size: 14px;
+    color: #999;
+    font-weight: 700;
+  }
+  
+  .question-card {
+    background: var(--paper);
+    border-radius: 24px;
+    padding: 28px 24px;
+    box-shadow: 0 8px 24px rgba(255, 143, 163, 0.15);
+    margin-bottom: 20px;
+    position: relative;
+    animation: slideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 3px solid var(--sky);
+  }
+  
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .scene-tag {
+    display: inline-block;
+    background: var(--sky);
+    color: #2a5d8f;
+    font-size: 11px;
+    padding: 4px 12px;
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+    font-weight: 700;
+    border-radius: 50px;
+  }
+  
+  .question-text {
+    font-family: 'Jua', sans-serif;
+    font-size: 20px;
+    line-height: 1.5;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+  
+  .question-sub {
+    font-family: 'Gaegu', cursive;
+    font-size: 15px;
+    color: #999;
+    margin-bottom: 20px;
+    font-weight: 700;
+  }
+  
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .option {
+    background: var(--bg-1);
+    border: 2px solid transparent;
+    border-radius: 16px;
+    padding: 15px 18px;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 1.5;
+    transition: all 0.2s;
+    position: relative;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .option:hover {
+    background: linear-gradient(135deg, var(--pink) 0%, var(--pink-deep) 100%);
+    color: white;
+    transform: translateX(4px) translateY(-2px);
+    box-shadow: 0 6px 16px rgba(232, 93, 122, 0.25);
+  }
+  
+  .option .opt-letter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: var(--pink);
+    color: white;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 13px;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  
+  .option:hover .opt-letter {
+    background: white;
+    color: var(--pink-deep);
+  }
+  
+  /* ================== 결과 화면 ================== */
+  .result-screen {
+    display: none;
+    padding: 10px 0 50px;
+  }
+  
+  .result-header {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  
+  .result-header .small {
+    font-family: 'Gaegu', cursive;
+    font-size: 18px;
+    color: var(--pink-deep);
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+  
+  .result-header .title {
+    font-family: 'Jua', sans-serif;
+    font-size: 26px;
+    line-height: 1.3;
+    color: var(--ink);
+  }
+  
+  .character-card {
+    background: var(--paper);
+    border-radius: 28px;
+    box-shadow: 0 12px 32px rgba(255, 143, 163, 0.2);
+    overflow: hidden;
+    margin-bottom: 20px;
+    animation: resultIn 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 3px solid var(--paper);
+  }
+  
+  @keyframes resultIn {
+    from { opacity: 0; transform: scale(0.9) translateY(30px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  
+  .char-banner {
+    color: white;
+    padding: 32px 24px;
+    position: relative;
+    text-align: center;
+  }
+  
+  .char-banner::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 30px;
+    height: 30px;
+    background: inherit;
+    background-color: inherit;
+  }
+  
+  .char-banner .label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    margin-bottom: 12px;
+    opacity: 0.9;
+    font-weight: 500;
+  }
+  
+  .char-banner .emoji {
+    font-size: 64px;
+    line-height: 1;
+    margin-bottom: 8px;
+    display: inline-block;
+    animation: bounce 1.5s infinite;
+  }
+  
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  
+  .char-banner .name {
+    font-family: 'Jua', sans-serif;
+    font-size: 32px;
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+  
+  .char-banner .subname {
+    font-family: 'Gaegu', cursive;
+    font-size: 16px;
+    opacity: 0.95;
+    font-weight: 700;
+  }
+  
+  .char-body {
+    padding: 32px 24px 28px;
+  }
+  
+  .char-quote {
+    font-family: 'Gaegu', cursive;
+    font-size: 19px;
+    line-height: 1.6;
+    color: var(--ink);
+    padding: 18px 20px;
+    background: var(--yellow);
+    border-radius: 16px;
+    margin-bottom: 24px;
+    font-weight: 700;
+    text-align: center;
+    position: relative;
+  }
+  
+  .char-quote::before {
+    content: '"';
+    position: absolute;
+    top: -10px;
+    left: 12px;
+    font-size: 48px;
+    color: var(--pink-deep);
+    font-family: serif;
+    line-height: 1;
+  }
+  
+  .char-section {
+    margin-bottom: 22px;
+  }
+  
+  .char-section h3 {
+    font-family: 'Jua', sans-serif;
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .char-section h3 .icon {
+    font-size: 20px;
+  }
+  
+  .char-section p {
+    font-size: 15px;
+    line-height: 1.8;
+    color: #555;
+  }
+  
+  .traits {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  
+  .trait {
+    background: var(--mint);
+    color: #2a6b4a;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    border-radius: 50px;
+  }
+  
+  .trait:nth-child(2n) { background: var(--peach); color: #8b4a2a; }
+  .trait:nth-child(3n) { background: var(--sky); color: #2a5d8f; }
+  .trait:nth-child(4n) { background: var(--lavender); color: #6a4a8b; }
+  
+  .pros-cons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  
+  .pros-cons > div {
+    padding: 14px 16px;
+    border-radius: 16px;
+  }
+  
+  .pros-cons .pros {
+    background: var(--mint);
+  }
+  
+  .pros-cons .cons {
+    background: var(--coral);
+  }
+  
+  .pros-cons h4 {
+    font-family: 'Jua', sans-serif;
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: var(--ink);
+  }
+  
+  .pros-cons ul {
+    list-style: none;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #555;
+  }
+  
+  .pros-cons li {
+    padding-left: 14px;
+    position: relative;
+    margin-bottom: 2px;
+  }
+  
+  .pros-cons .pros li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #2a6b4a;
+    font-weight: 700;
+  }
+  
+  .pros-cons .cons li::before {
+    content: '!';
+    position: absolute;
+    left: 2px;
+    color: #c44a3a;
+    font-weight: 700;
+  }
+  
+  .compatibility {
+    background: linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 100%);
+    border-radius: 18px;
+    padding: 18px;
+    margin-top: 20px;
+    border: 2px dashed var(--pink);
+  }
+  
+  .compatibility h4 {
+    font-family: 'Jua', sans-serif;
+    font-size: 15px;
+    margin-bottom: 12px;
+    color: var(--pink-deep);
+    text-align: center;
+  }
+  
+  .compat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    font-size: 14px;
+    background: white;
+    border-radius: 12px;
+    margin-bottom: 8px;
+  }
+  
+  .compat-row:last-child { margin-bottom: 0; }
+  
+  .compat-row .name-tag {
+    font-weight: 700;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .compat-row.good .name-tag::before {
+    content: '💕';
+    font-size: 16px;
+  }
+  
+  .compat-row.bad .name-tag::before {
+    content: '💔';
+    font-size: 16px;
+  }
+  
+  .compat-row .reason {
+    font-family: 'Gaegu', cursive;
+    font-size: 13px;
+    color: #888;
+    font-weight: 700;
+    text-align: right;
+    max-width: 55%;
+  }
+  
+  .actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+  
+  .actions button {
+    flex: 1;
+    min-width: 130px;
+    padding: 14px 20px;
+    font-family: 'Jua', sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    border-radius: 50px;
+  }
+  
+  .btn-share {
+    background: linear-gradient(135deg, var(--pink) 0%, var(--pink-deep) 100%);
+    color: white;
+    box-shadow: 0 6px 16px rgba(232, 93, 122, 0.3);
+  }
+  
+  .btn-share:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(232, 93, 122, 0.4);
+  }
+  
+  .btn-restart {
+    background: white;
+    color: var(--pink-deep);
+    border: 2px solid var(--pink);
+    box-shadow: 0 4px 12px rgba(255, 143, 163, 0.2);
+  }
+  
+  .btn-restart:hover {
+    background: var(--bg-2);
+    transform: translateY(-2px);
+  }
+  
+  /* ================== 푸터 (창작자 정보) ================== */
+  .footer {
+    margin-top: 30px;
+    padding: 20px;
+    text-align: center;
+    background: var(--paper);
+    border-radius: 18px;
+    border: 2px solid var(--bg-2);
+  }
+  
+  .footer .creator {
+    font-family: 'Gaegu', cursive;
+    font-size: 16px;
+    color: var(--ink);
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  
+  .footer .creator a {
+    color: var(--pink-deep);
+    text-decoration: none;
+    font-weight: 700;
+    border-bottom: 2px dotted var(--pink);
+    padding-bottom: 1px;
+    transition: all 0.2s;
+  }
+  
+  .footer .creator a:hover {
+    color: var(--ink);
+    border-bottom-color: var(--ink);
+  }
+  
+  .footer .disclaimer {
+    font-size: 11px;
+    color: #aaa;
+    line-height: 1.8;
+    margin-top: 10px;
+  }
+  
+  @media (max-width: 480px) {
+    .intro h1 { font-size: 32px; }
+    .char-banner .name { font-size: 26px; }
+    .question-text { font-size: 17px; }
+    .pros-cons { grid-template-columns: 1fr; }
+    .visitor-chip { font-size: 11px; padding: 6px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-decoration">
+  <div class="bg-shape"></div>
+  <div class="bg-shape"></div>
+  <div class="bg-shape"></div>
+  <div class="bg-shape"></div>
+  <div class="bg-shape"></div>
+</div>
+
+<div class="container">
+
+<!-- ================== 방문자 카운터 ================== -->
+<div class="visitor-bar">
+  <div class="visitor-chip">
+    <span class="dot"></span>
+    <span>오늘 <strong id="todayCount">···</strong>명</span>
+  </div>
+  <div class="visitor-chip total">
+    <span class="dot"></span>
+    <span>누적 <strong id="totalCount">···</strong>명</span>
+  </div>
+</div>
+
+<!-- ================== 인트로 ================== -->
+<section class="intro" id="intro">
+  <div class="intro-emoji">💗</div>
+  <h1>연애 예능<br>캐릭터 테스트 <span class="heart">♥</span></h1>
+  <p class="subtitle">~ 나는 어떤 유형일까? ~</p>
+  
+  <div class="description-card">
+    <p>당신이 만약 <strong>연애 예능</strong>에 출연한다면,<br>어떤 캐릭터로 사랑받을까요? 💖</p>
+    <p>12가지 상황에서의 선택으로 <strong>8가지 연애 유형</strong> 중 당신과 가장 닮은 캐릭터를 찾아드려요!</p>
+  </div>
+  
+  <button class="start-btn" onclick="startTest()">테스트 시작하기 ✨</button>
+  
+  <div class="type-preview">
+    <div class="label">✿ 8가지 캐릭터 유형 ✿</div>
+    <div class="type-names">
+      🔥 직진 사랑꾼 · ✨ 분위기 메이커 · 🌿 묵묵한 배려<br>
+      🌙 쿨한 관찰자 · 🎯 논리 직진 · 🍯 여유로운 매력<br>
+      💎 당당한 자립 · 🌾 현실적 야무진
+    </div>
+  </div>
+</section>
+
+<!-- ================== 테스트 ================== -->
+<section class="test-screen" id="test">
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+  <div class="progress-info">
+    <span class="q-num">Q<span id="currentQ">1</span> / 12</span>
+    <span class="label-side" id="progressLabel">시작!</span>
+  </div>
+  
+  <div id="questionContainer"></div>
+</section>
+
+<!-- ================== 결과 ================== -->
+<section class="result-screen" id="result">
+  <div class="result-header">
+    <div class="small">두구두구 🥁</div>
+    <div class="title">당신의 연애 캐릭터는?</div>
+  </div>
+  
+  <div class="character-card" id="characterCard"></div>
+  
+  <div class="actions">
+    <button class="btn-share" onclick="shareResult()">결과 공유하기 💌</button>
+    <button class="btn-restart" onclick="restart()">다시 하기 🔄</button>
+  </div>
+</section>
+
+<!-- ================== 푸터 ================== -->
+<div class="footer">
+  <div class="creator">
+    Created by <a href="https://x.com/jk_sats" target="_blank" rel="noopener">청산의달인 (@jk_sats)</a>
+  </div>
+  <div class="disclaimer">
+    ※ 본 테스트는 재미를 위한 콘텐츠로, 심리학적·전문적 진단이 아닙니다.<br>
+    ※ 결과는 일반적인 성격 유형을 분류한 것이며 특정 개인을 지칭하지 않습니다.<br>
+    ※ 본 콘텐츠는 어떠한 방송 프로그램이나 출연자와도 무관한 창작물입니다.<br>
+    ※ 방문자 카운트는 익명 집계용이며, 개인정보를 수집·저장하지 않습니다.
+  </div>
+</div>
+
+</div>
+
+<script>
+// ============================================
+// 방문자 카운터 (CountAPI 사용)
+// ============================================
+const NAMESPACE = 'jksats-love-test-2026';
+const TODAY_KEY = 'today-' + new Date().toISOString().split('T')[0];
+const TOTAL_KEY = 'total';
+
+async function updateCounters() {
+  try {
+    // 오늘 방문자 (날짜별 키)
+    const todayRes = await fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${TODAY_KEY}/up`);
+    const todayData = await todayRes.json();
+    document.getElementById('todayCount').textContent = (todayData.count || 1).toLocaleString();
+    
+    // 누적 방문자
+    const totalRes = await fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${TOTAL_KEY}/up`);
+    const totalData = await totalRes.json();
+    document.getElementById('totalCount').textContent = (totalData.count || 1).toLocaleString();
+  } catch (e) {
+    // API 실패 시 fallback
+    document.getElementById('todayCount').textContent = '-';
+    document.getElementById('totalCount').textContent = '-';
+  }
+}
+
+// 페이지 로드 시 카운터 업데이트
+updateCounters();
+
+// ============================================
+// 8가지 캐릭터 유형
+// ============================================
+const typeKeys = ['직진사랑꾼', '분위기메이커', '묵묵한배려', '쿨한관찰자', '논리직진', '여유로운매력', '당당한자립', '현실적야무진'];
+
+const characterData = {
+  직진사랑꾼: {
+    emoji: '🔥',
+    name: '직진 사랑꾼형',
+    subname: 'The All-In Romantic',
+    color: 'linear-gradient(135deg, #ff8fa3 0%, #e85d7a 100%)',
+    quote: "한 번 마음을 정하면, 끝까지 갑니다!",
+    personality: "한 사람에게 진심으로 올인하는 타입이에요. 조건을 따지기보다 마음이 가는 대로 직진하는 스타일이라, 한번 좋아하면 표현을 아끼지 않아요. 책임감이 강하고 약속을 잘 지키는 편이라 연애가 진중하게 흘러갑니다. 다만 마음을 너무 빨리 보여줘서 상대에게 부담을 줄 때도 있어요.",
+    traits: ['순애보', '직진러', '책임감', '진심파'],
+    pros: ['표현이 솔직함', '한결같음', '의지가 됨'],
+    cons: ['부담스러울 수 있음', '거절에 약함', '밀당 못함'],
+    good: { name: '묵묵한 배려형', reason: '안정적이고 따뜻한 케미' },
+    bad: { name: '쿨한 관찰자형', reason: '템포 차이가 큼' }
+  },
+  분위기메이커: {
+    emoji: '✨',
+    name: '분위기 메이커형',
+    subname: 'The Energizer',
+    color: 'linear-gradient(135deg, #ffd4b8 0%, #ff8fa3 100%)',
+    quote: "어디든 내가 가면 분위기가 살아요~",
+    personality: "외향적이고 사교성이 뛰어난 타입이에요. 처음 보는 사람들 사이에서도 자연스럽게 대화를 이끌고, 어색한 분위기를 잘 풀어내요. 활기차고 매력적이어서 주변에 사람이 많이 모이는 스타일! 다만 여러 사람과 두루 친하다 보니 진심을 가볍게 오해받기도 해요.",
+    traits: ['인싸력', '센스만점', '에너자이저', '주목받음'],
+    pros: ['어디서나 환영받음', '대화 잘함', '매력 어필 능숙'],
+    cons: ['진심 의심받음', '여러 명에게 친절', '깊이 부족'],
+    good: { name: '쿨한 관찰자형', reason: '서로의 부족함을 채워줌' },
+    bad: { name: '현실적 야무진형', reason: '가치관이 충돌할 수 있음' }
+  },
+  묵묵한배려: {
+    emoji: '🌿',
+    name: '묵묵한 배려형',
+    subname: 'The Quiet Caregiver',
+    color: 'linear-gradient(135deg, #b8e6d1 0%, #4a9b7a 100%)',
+    quote: "굳이 말하지 않아도 챙겨주는 게 좋아요~",
+    personality: "조용하지만 깊은 배려심을 가진 타입이에요. 자기를 드러내기보다 상대방을 살피고 챙기는 데 익숙해요. 갈등을 만들지 않고 조용히 자기 자리를 지키는 스타일! 마음을 표현하는 데는 서툴지만, 그 진심이 시간이 지나면 자연스럽게 드러나요.",
+    traits: ['배려심', '따뜻함', '진중함', '슬로우 스타터'],
+    pros: ['신뢰감 줌', '편안함', '오래 사귀기 좋음'],
+    cons: ['표현 부족', '먼저 다가가지 못함', '오해받기 쉬움'],
+    good: { name: '직진 사랑꾼형', reason: '진심을 알아봐주는 사람' },
+    bad: { name: '분위기 메이커형', reason: '에너지 차이가 큼' }
+  },
+  쿨한관찰자: {
+    emoji: '🌙',
+    name: '쿨한 관찰자형',
+    subname: 'The Observer',
+    color: 'linear-gradient(135deg, #dcc8f5 0%, #8a6ec0 100%)',
+    quote: "천천히 보고 결정하는 편이에요...",
+    personality: "감정에 휘둘리지 않고 차분히 상황을 관찰하는 타입이에요. 첫인상에 휩쓸리지 않고 시간을 두고 사람을 알아갑니다. 자기 페이스를 잘 지키며 무리에 휩쓸리지 않아요. 차가워 보이지만 한번 마음을 열면 깊고 한결같은 스타일!",
+    traits: ['차분함', '신중함', '자기 페이스', '깊이 있음'],
+    pros: ['판단 정확함', '흔들리지 않음', '진심은 깊음'],
+    cons: ['차가워 보임', '결정 늦음', '먼저 다가가지 않음'],
+    good: { name: '분위기 메이커형', reason: '서로의 빈자리를 메워줌' },
+    bad: { name: '직진 사랑꾼형', reason: '속도가 너무 달라 부담' }
+  },
+  논리직진: {
+    emoji: '🎯',
+    name: '논리 직진형',
+    subname: 'The Strategist',
+    color: 'linear-gradient(135deg, #c4dffd 0%, #4a85c5 100%)',
+    quote: "감정도 좋지만, 현실이 먼저예요!",
+    personality: "이성적이고 목표 지향적인 타입이에요. 연애도 명확한 비전과 계획으로 접근하며, 의미 없는 시간을 낭비하지 않아요. 감정 표현이 직설적이고 거침없어서 때로는 차갑게 들리지만, 그만큼 진실되고 단단해요. 결혼을 진지하게 생각하는 스타일!",
+    traits: ['논리적', '계획적', '직설적', '결혼 지향'],
+    pros: ['명확함', '약속 잘 지킴', '미래 그림 분명'],
+    cons: ['로맨틱 부족', '감정 표현 서툼', '딱딱해 보임'],
+    good: { name: '당당한 자립형', reason: '대등한 파트너십 가능' },
+    bad: { name: '묵묵한 배려형', reason: '소통 방식이 너무 다름' }
+  },
+  여유로운매력: {
+    emoji: '🍯',
+    name: '여유로운 매력형',
+    subname: 'The Natural Charmer',
+    color: 'linear-gradient(135deg, #ffe9a8 0%, #e8a838 100%)',
+    quote: "급할 필요 없어요. 천천히 알아가요~",
+    personality: "타고난 매력으로 사람을 끄는 타입이에요. 자기 어필을 과하게 하지 않아도 자연스럽게 호감을 얻는 스타일. 여유롭고 편안한 분위기를 만들어 함께 있으면 마음이 편해져요. 다만 결정을 서두르지 않다 보니 우유부단해 보일 때도 있어요.",
+    traits: ['자연스러움', '편안함', '인기형', '여유'],
+    pros: ['거부감 없음', '함께 있기 편함', '다정함'],
+    cons: ['결정 느림', '명확하지 않음', '오해받기 쉬움'],
+    good: { name: '묵묵한 배려형', reason: '서로 편안한 케미' },
+    bad: { name: '논리 직진형', reason: '템포가 안 맞음' }
+  },
+  당당한자립: {
+    emoji: '💎',
+    name: '당당한 자립형',
+    subname: 'The Independent',
+    color: 'linear-gradient(135deg, #ffb5a7 0%, #d65a4a 100%)',
+    quote: "나는 나로 충분하지만, 함께라면 더 좋아요!",
+    personality: "자기관리가 철저하고 독립심이 강한 타입이에요. 누군가에게 기대지 않아도 스스로 충분히 행복할 수 있는 자기만의 세계를 가졌어요. 연애를 해도 본인 페이스를 잃지 않으며, 대등한 관계를 추구합니다. 자존감이 높고 자기 기준이 분명해요!",
+    traits: ['자립심', '자기관리', '당당함', '대등 추구'],
+    pros: ['휘둘리지 않음', '안정적', '자존감 높음'],
+    cons: ['기대기 어려워함', '거리감 있음', '예민할 수 있음'],
+    good: { name: '논리 직진형', reason: '명확한 관계 추구' },
+    bad: { name: '여유로운 매력형', reason: '답답함을 느낄 수 있음' }
+  },
+  현실적야무진: {
+    emoji: '🌾',
+    name: '현실적 야무진형',
+    subname: 'The Pragmatist',
+    color: 'linear-gradient(135deg, #ffd4b8 0%, #c47a4a 100%)',
+    quote: "사랑도 좋지만, 내 인생도 중요해요~",
+    personality: "현실 감각이 뛰어나고 야무진 타입이에요. 화려함보다는 실속을 중시하며, 자기 일과 사랑 모두에서 균형을 잘 잡아요. 정이 많지만 호락호락하지 않아서, 이용당한다고 느끼면 단호하게 선을 긋습니다. 자수성가 기질이 강하고 책임감이 큰 스타일!",
+    traits: ['실속파', '야무짐', '균형 감각', '단단함'],
+    pros: ['믿음직함', '실용적', '균형 잡힘'],
+    cons: ['로맨스 부족', '계산적으로 보임', '경계 분명'],
+    good: { name: '당당한 자립형', reason: '서로의 가치를 인정' },
+    bad: { name: '분위기 메이커형', reason: '진정성을 의심하게 됨' }
+  }
+};
+
+// ============================================
+// 12개 질문
+// ============================================
+const questions = [
+  {
+    scene: "✿ Scene 01 · 첫 만남",
+    text: "처음 보는 사람들 사이에 들어갔을 때, 당신은?",
+    sub: "낯선 모임 첫 5분",
+    options: [
+      { text: "먼저 말 걸고 분위기 주도하기", scores: { 분위기메이커: 3, 여유로운매력: 1 } },
+      { text: "조용히 관찰하며 분위기 파악부터", scores: { 쿨한관찰자: 3, 묵묵한배려: 2 } },
+      { text: "마음에 드는 사람에게 곧장 다가가기", scores: { 직진사랑꾼: 3, 논리직진: 1 } },
+      { text: "어색해서 짐 정리나 주변 정돈부터", scores: { 묵묵한배려: 2, 현실적야무진: 2 } }
+    ]
+  },
+  {
+    scene: "✿ Scene 02 · 호감 표현",
+    text: "마음에 드는 사람이 생겼다. 어떻게 표현하나?",
+    sub: "직진? 우회? 신중?",
+    options: [
+      { text: "솔직하게 마음 표현하고 직진", scores: { 직진사랑꾼: 3, 논리직진: 1 } },
+      { text: "여러 사람과 친하게 지내며 분위기 만들기", scores: { 분위기메이커: 2, 여유로운매력: 3 } },
+      { text: "조용히 챙겨주며 마음 전달", scores: { 묵묵한배려: 3, 현실적야무진: 1 } },
+      { text: "내 가치를 어필하며 명확하게 제안", scores: { 논리직진: 3, 당당한자립: 2 } }
+    ]
+  },
+  {
+    scene: "✿ Scene 03 · 갈등 상황",
+    text: "단체 자리에서 누군가 내 험담을 하는 게 들렸다",
+    sub: "당신의 반응은?",
+    options: [
+      { text: "그 자리에서 바로 따져 묻기", scores: { 당당한자립: 3, 논리직진: 2 } },
+      { text: "겉으로는 티 안 내고 속으로 정리", scores: { 묵묵한배려: 2, 현실적야무진: 2, 쿨한관찰자: 1 } },
+      { text: "더 큰 목소리로 받아치고 분위기 장악", scores: { 분위기메이커: 2, 당당한자립: 1 } },
+      { text: "관련 없는 척하고 자리를 뜬다", scores: { 쿨한관찰자: 3, 여유로운매력: 1 } }
+    ]
+  },
+  {
+    scene: "✿ Scene 04 · 그룹 안에서",
+    text: "친한 무리에서 누군가 한 명을 은근히 따돌리고 있다",
+    sub: "당신의 포지션은?",
+    options: [
+      { text: "동조하는 척하지만 마음은 불편", scores: { 분위기메이커: 2, 쿨한관찰자: 1 } },
+      { text: "따돌림 당하는 쪽에 다가가 말 걸기", scores: { 묵묵한배려: 3, 직진사랑꾼: 1 } },
+      { text: "양쪽 다 거리 두기. 엮이기 싫음", scores: { 쿨한관찰자: 3, 여유로운매력: 2 } },
+      { text: "정면으로 문제 제기하기", scores: { 당당한자립: 3, 논리직진: 2 } }
+    ]
+  },
+  {
+    scene: "✿ Scene 05 · 자기소개",
+    text: "자기소개 시간! 가장 강조하고 싶은 건?",
+    sub: "어떤 면을 보여줄까?",
+    options: [
+      { text: "직업·경력 등 객관적 스펙", scores: { 논리직진: 3, 현실적야무진: 2 } },
+      { text: "독특한 이력이나 반전 매력", scores: { 분위기메이커: 3, 여유로운매력: 2 } },
+      { text: "취미와 인간미. 일상적 소소함", scores: { 묵묵한배려: 2, 쿨한관찰자: 2, 여유로운매력: 1 } },
+      { text: "자기관리와 라이프스타일", scores: { 당당한자립: 3, 현실적야무진: 2 } }
+    ]
+  },
+  {
+    scene: "✿ Scene 06 · 1대1 데이트",
+    text: "이상적인 데이트 스타일은?",
+    sub: "어떤 분위기를 만드나?",
+    options: [
+      { text: "조용한 카페에서 깊은 대화", scores: { 쿨한관찰자: 3, 묵묵한배려: 2 } },
+      { text: "활동적인 데이트 (운동, 야외 활동)", scores: { 당당한자립: 2, 논리직진: 2 } },
+      { text: "유머와 분위기로 즐겁게", scores: { 분위기메이커: 3, 여유로운매력: 2 } },
+      { text: "맛집·맛있는 음식 챙겨주기", scores: { 묵묵한배려: 3, 직진사랑꾼: 1, 현실적야무진: 1 } }
+    ]
+  },
+  {
+    scene: "✿ Scene 07 · 연애 가치관",
+    text: "연애에서 가장 중요하게 생각하는 건?",
+    sub: "당신의 우선순위",
+    options: [
+      { text: "안정과 결혼. 빠른 결정이 좋다", scores: { 논리직진: 3, 직진사랑꾼: 2 } },
+      { text: "감정과 케미. 설레는 게 우선", scores: { 직진사랑꾼: 2, 여유로운매력: 2, 쿨한관찰자: 1 } },
+      { text: "조건이 맞아야 함. 현실 무시 못함", scores: { 현실적야무진: 3, 당당한자립: 2 } },
+      { text: "서로 편안한 사이. 친구 같은 연인", scores: { 묵묵한배려: 2, 현실적야무진: 1, 여유로운매력: 2 } }
+    ]
+  },
+  {
+    scene: "✿ Scene 08 · 경쟁 상황",
+    text: "내가 좋아하는 사람을 다른 사람도 좋아한다면?",
+    sub: "삼각관계 시뮬레이션",
+    options: [
+      { text: "당당하게 경쟁. 내 매력을 확실히 어필", scores: { 당당한자립: 3, 분위기메이커: 2 } },
+      { text: "포기하고 다른 사람 찾기. 미련 없음", scores: { 쿨한관찰자: 2, 현실적야무진: 2 } },
+      { text: "은근히 견제하며 분위기 만들기", scores: { 분위기메이커: 2, 여유로운매력: 1 } },
+      { text: "직접 솔직하게 묻고 대화", scores: { 직진사랑꾼: 3, 논리직진: 2 } }
+    ]
+  },
+  {
+    scene: "✿ Scene 09 · 약점",
+    text: "내가 자주 듣는 단점은?",
+    sub: "냉정한 자기 진단",
+    options: [
+      { text: "사람 가린다, 친한 사람한테만 잘한다", scores: { 분위기메이커: 2, 여유로운매력: 2 } },
+      { text: "너무 직설적이고 정 없어 보인다", scores: { 당당한자립: 2, 논리직진: 3 } },
+      { text: "너무 착해서 만만하게 보인다", scores: { 묵묵한배려: 3, 현실적야무진: 1 } },
+      { text: "감정 표현이 부족하고 차갑다", scores: { 쿨한관찰자: 3, 여유로운매력: 1 } }
+    ]
+  },
+  {
+    scene: "✿ Scene 10 · 인기 유형",
+    text: "이성에게 받는 인기 유형은?",
+    sub: "객관적 자기 평가",
+    options: [
+      { text: "여러 명이 동시에 호감 표현하는 편", scores: { 분위기메이커: 3, 여유로운매력: 3 } },
+      { text: "알게 되면 빠지는 슬로우 스타터", scores: { 쿨한관찰자: 3, 묵묵한배려: 2 } },
+      { text: "강한 인상으로 호불호 갈림", scores: { 당당한자립: 3, 논리직진: 1 } },
+      { text: "친구로 머무는 경우가 많음", scores: { 직진사랑꾼: 2, 현실적야무진: 2, 쿨한관찰자: 1 } }
+    ]
+  },
+  {
+    scene: "✿ Scene 11 · 가치관",
+    text: "이 중 가장 못 참는 건?",
+    sub: "당신의 레드라인",
+    options: [
+      { text: "거짓말. 어떤 형태든 못 견딤", scores: { 논리직진: 2, 당당한자립: 2, 직진사랑꾼: 2 } },
+      { text: "예의 없는 행동. 매너가 사람 만든다", scores: { 쿨한관찰자: 2, 묵묵한배려: 2 } },
+      { text: "무시당하는 것. 자존감 건드리면 끝", scores: { 당당한자립: 3, 분위기메이커: 2 } },
+      { text: "이용당하는 느낌. 호의를 호구로 보면 분노", scores: { 현실적야무진: 3, 묵묵한배려: 1 } }
+    ]
+  },
+  {
+    scene: "✿ Scene 12 · 최종 선택",
+    text: "최종 결정의 날, 당신은?",
+    sub: "마지막 선택의 순간",
+    options: [
+      { text: "확신 있는 사람에게 직진. 후회 없음", scores: { 직진사랑꾼: 3, 논리직진: 2 } },
+      { text: "여러 가능성 열어두고 신중하게", scores: { 여유로운매력: 3, 분위기메이커: 2 } },
+      { text: "조용히 마음 정리. 안 되면 깔끔하게", scores: { 쿨한관찰자: 3, 묵묵한배려: 2 } },
+      { text: "여기서 안 되면 다른 데서 만나면 됨", scores: { 당당한자립: 3, 현실적야무진: 2 } }
+    ]
+  }
+];
+
+// ============================================
+// 상태 관리
+// ============================================
+let currentQuestion = 0;
+const scores = {};
+typeKeys.forEach(k => scores[k] = 0);
+
+function startTest() {
+  document.getElementById('intro').style.display = 'none';
+  document.getElementById('test').style.display = 'block';
+  window.scrollTo(0, 0);
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = questions[currentQuestion];
+  const container = document.getElementById('questionContainer');
+  
+  document.getElementById('currentQ').textContent = currentQuestion + 1;
+  document.getElementById('progressFill').style.width = ((currentQuestion) / questions.length * 100) + '%';
+  document.getElementById('progressLabel').textContent = q.scene.split('·')[1] ? q.scene.split('·')[1].trim() : '진행 중';
+  
+  const letters = ['A', 'B', 'C', 'D'];
+  
+  container.innerHTML = `
+    <div class="question-card">
+      <div class="scene-tag">${q.scene}</div>
+      <div class="question-text">${q.text}</div>
+      <div class="question-sub">${q.sub}</div>
+      <div class="options">
+        ${q.options.map((opt, i) => `
+          <button class="option" onclick="selectOption(${i})">
+            <span class="opt-letter">${letters[i]}</span><span>${opt.text}</span>
+          </button>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function selectOption(index) {
+  const q = questions[currentQuestion];
+  const selectedScores = q.options[index].scores;
+  
+  for (const [type, points] of Object.entries(selectedScores)) {
+    if (scores.hasOwnProperty(type)) {
+      scores[type] += points;
+    }
+  }
+  
+  currentQuestion++;
+  
+  if (currentQuestion < questions.length) {
+    renderQuestion();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  let topType = typeKeys[0];
+  let topScore = scores[topType];
+  for (const [type, score] of Object.entries(scores)) {
+    if (score > topScore) {
+      topType = type;
+      topScore = score;
+    }
+  }
+  
+  document.getElementById('progressFill').style.width = '100%';
+  
+  setTimeout(() => {
+    document.getElementById('test').style.display = 'none';
+    document.getElementById('result').style.display = 'block';
+    window.scrollTo(0, 0);
+    
+    const data = characterData[topType];
+    const card = document.getElementById('characterCard');
+    
+    card.innerHTML = `
+      <div class="char-banner" style="background: ${data.color};">
+        <div class="label-row">
+          <span>YOUR TYPE ✦</span>
+          <span>SCORE ${topScore}</span>
+        </div>
+        <div class="emoji">${data.emoji}</div>
+        <div class="name">${data.name}</div>
+        <div class="subname">${data.subname}</div>
+      </div>
+      
+      <div class="char-body">
+        <div class="char-quote">${data.quote}</div>
+        
+        <div class="char-section">
+          <h3><span class="icon">💭</span> 성격 분석</h3>
+          <p>${data.personality}</p>
+        </div>
+        
+        <div class="char-section">
+          <h3><span class="icon">🏷️</span> 대표 키워드</h3>
+          <div class="traits">
+            ${data.traits.map(t => `<span class="trait">#${t}</span>`).join('')}
+          </div>
+        </div>
+        
+        <div class="char-section">
+          <h3><span class="icon">⚖️</span> 강점 & 약점</h3>
+          <div class="pros-cons">
+            <div class="pros">
+              <h4>강점</h4>
+              <ul>${data.pros.map(p => `<li>${p}</li>`).join('')}</ul>
+            </div>
+            <div class="cons">
+              <h4>약점</h4>
+              <ul>${data.cons.map(c => `<li>${c}</li>`).join('')}</ul>
+            </div>
+          </div>
+        </div>
+        
+        <div class="compatibility">
+          <h4>♡ 연애 케미 분석 ♡</h4>
+          <div class="compat-row good">
+            <span class="name-tag">${data.good.name}</span>
+            <span class="reason">${data.good.reason}</span>
+          </div>
+          <div class="compat-row bad">
+            <span class="name-tag">${data.bad.name}</span>
+            <span class="reason">${data.bad.reason}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }, 400);
+}
+
+function shareResult() {
+  const topType = typeKeys.reduce((a, b) => scores[a] > scores[b] ? a : b);
+  const data = characterData[topType];
+  const shareText = `[연애 예능 캐릭터 테스트]\n나는 ${data.emoji} ${data.name}!\n"${data.quote}"\n\nby @jk_sats`;
+  
+  if (navigator.share) {
+    navigator.share({ title: '연애 예능 캐릭터 테스트', text: shareText });
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(shareText).then(() => {
+      alert('결과가 클립보드에 복사되었어요! 💌');
+    });
+  } else {
+    alert(shareText);
+  }
+}
+
+function restart() {
+  currentQuestion = 0;
+  typeKeys.forEach(k => scores[k] = 0);
+  document.getElementById('result').style.display = 'none';
+  document.getElementById('intro').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+</script>
+
+</body>
+</html>
